@@ -27,13 +27,13 @@ Busco personalmente la apropiación de los conocimientos de ETL, EDA y Machine L
 Es un desafío para mi enfrentarme a este Dataset y lograr realizar un modelo de Machine Learning funcional.
 ## Objetivo
 
-El objetivo central de este proyecto es desarrollar y desplegar una API con diferentes funciones  sistema de predicción de precios de juegos, aprovechando un conjunto de datos completo. El proyecto se enfoca en lograr los siguientes objetivos específicos:
+Desarrollar mis aptitudes de análisis con el Dataset entregado y llevar a feliz término el proyecto cumpliendo con la entrega de un modelo de Machine Learning y las funciones solicitadas desplegadas en Render.
 
-- **Transformación y Limpieza de Datos:** Aplicar técnicas de Extracción, Transformación y Carga (ETL) para preprocesar y limpiar el conjunto de datos de juegos.
+- **Transformación y Limpieza de Datos:** Optimizar el proceso de ETL con el fin de entender mejor los datos y tomar decisiones acertadas que me permitan conservna los datos de la mejor manera posible, en pro de cumplir con la creación de las funciones solicitadas y el modelo requerido.
 
-- **Desarrollo de API:** Diseñar e implementar un conjunto de funciones y una API que se integre perfectamente con el sistema de predicción de precios de juegos.
+- **Desarrollo de API:** Entregar una API que arroje resultados acordes al contenido de los diferentes Dataset.
 
-- **Modelo ML:** Desarrollar un modelo que nos permita recomendar videojuegos
+- **Modelo ML:** Desarrollar un modelo que recomiende videojuegos.
 
 - **Feature Engineering:** Crear la columna ***Sentiment_analysis*** la cual aplica un analisis de sentimiento a diferentes reseñas que hay en data set, donde se deben tomar los siguientes valores **0** si es ***Malo***, **1** si es ***Neutro*** y **2** si es ***Positivo***. Además, de no estar la reseña se debe tomar el valor de  **1**.
 
