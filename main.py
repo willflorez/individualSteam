@@ -4,6 +4,7 @@ import pandas as pd
 import pandas as pd
 import operator
 from API import presentacion
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -11,6 +12,7 @@ df_reviews = pd.read_csv('reviews.csv')
 df_gastos_items = pd.read_csv('gastos_items.csv')
 df_genre_ranking = pd.read_csv('genre_ranking.csv')
 df_items_developer = pd.read_csv('items_developer.csv')
+df_modelo = pd.read_parquet("Modelo.parquet")
 
 
 @app.get(path="/", 
@@ -159,3 +161,19 @@ def sentiment_analysis(anio: str = Query(...,
              pass
     
      return sentiment_counts
+ 
+ 
+@app.get("/recomendacion_juego/{id_producto}",
+          description =""" Esta función recomendacion_juego devuelve 5 juegos similares al ingresado.<br>
+                        
+                        """)
+async def recomendacion_juego(id_producto: int):
+    recomendaciones = df_modelo[df_modelo['id'] == id_producto]['recomendaciones'].iloc[0]
+    
+    if len(recomendaciones) > 0:
+        recomendaciones_dict = {i + 1: juego for i, juego in enumerate(recomendaciones)}
+        return recomendaciones_dict
+    else:
+        # Si no se encontraron recomendaciones para el ID, devolver un mensaje de error
+        error_data = {'error': 'No se encontraron recomendaciones para el ID proporcionado'}
+        return JSONResponse(content=error_data, status_code=404)
