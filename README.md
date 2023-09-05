@@ -153,10 +153,10 @@ Luego de completar la implementación de **main.py** y demás archivos que compo
 
 ## Video
 
-Si deseas ver el video donde se proporciona una visión general de este proyecto, simplemente haz clic en el logotipo de YouTube a continuación:
+Abajo comparto link de video solicitado.
 
 <div align="center">
   
-[![YouTube](Link del video va aqui)
+[https://www.loom.com/share/3c45f5c52b9344088c52cd5bbe820492?sid=5035446d-fc5a-480e-936d-fc211e582ff4]
   
 </div>
