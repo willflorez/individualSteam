@@ -8,10 +8,10 @@ from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-df_reviews = pd.read_csv('reviews.csv')
-df_gastos_items = pd.read_csv('gastos_items.csv')
-df_genre_ranking = pd.read_csv('genre_ranking.csv')
-df_items_developer = pd.read_csv('items_developer.csv')
+df_reviews = pd.read_parquet('reviews.parquet')
+df_gastos_items = pd.read_parquet('gastos_items.parquet')
+df_genre_ranking = pd.read_parquet('genre_ranking.parquet')
+df_items_developer = pd.read_parquet('items_developer.parquet')
 df_modelo = pd.read_parquet("Modelo.parquet")
 
 
