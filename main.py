@@ -38,9 +38,9 @@ def userdata(user_id: str = Query(...,
          
     Returns:
         dict: Un diccionario que contiene información sobre el usuario.
-            - 'cantidad_dinero' (int): Cantidad de dinero gastado por el usuario.
+            - 'cantidad_dinero' (int): Dinero gastado por el usuario.
             - 'porcentaje_recomendacion' (float): Porcentaje de recomendaciones realizadas por el usuario.
-            - 'total_items' (int): Cantidad de items que tiene el usuario.
+            - 'total_items' (int): Items del tiene el usuario.
     '''
     
     usuario = df_reviews[df_reviews['user_id'] == user_id]
@@ -62,49 +62,41 @@ def userdata(user_id: str = Query(...,
         'total_items': int(count_items)
     }
     
-# """    
-# @app.get(path = '/countreviews',
-#           description = """ <font color="blue">
-#                         INSTRUCCIONES<br>
-#                         1. Haga clik en "Try it out".<br>
-#                         2. Ingrese las fechas de inicio y fin en formato YYYY-MM-DD en los box abajo.<br>
-#                         3. Scrollear a "Resposes" para ver el resultado de la clasificación.
-#                         </font>
-#                         """,
-#          tags=["Consultas Generales"])
-# def countreviews(fecha_inicio: str = Query(..., 
-#                                 description="Fechas de inicio para filtar la información", 
-#                                 example='2011-11-05'), 
-#                  fecha_fin: str = Query(..., 
-#                                 description="Fechas de Fin para filtar la información", 
-#                                 example='2012-12-24')):
-#     '''
-#     Esta función devuelve estadísticas sobre las reviews realizadas por los usuarios entre dos fechas.
+     
+@app.get(path = '/countreviews')       
+def countreviews(fecha_inicio: str = Query(..., 
+                                 description="Fechas de inicio para filtar la información", 
+                                 example='2010-01-01'), 
+                  fecha_fin: str = Query(..., 
+                                 description="Fechas de Fin para filtar la información", 
+                                 example='2012-12-31')):
+     '''
+     Esta función devolverá información en pantalla sobre las reviews realizadas por los usuarios entre dos fechas ingresadas.
          
-#     Args:
-#         fecha_inicio (str): Fecha de inicio para filtrar la información en formato YYYY-MM-DD.
-#         fecha_fin (str): Fecha de fin para filtrar la información en formato YYYY-MM-DD.
+     Args:
+         fecha_inicio (str): Fecha de inicio para filtrar la información en formato YYYY-MM-DD.
+         fecha_fin (str): Fecha de fin para filtrar la información en formato YYYY-MM-DD.
     
-#     Returns:
-#         dict: Un diccionario que contiene estadísticas de las reviews entre las fechas especificadas.
-#             - 'total_usuarios_reviews' (int): Cantidad de usuarios que realizaron reviews entre las fechas.
-#             - 'porcentaje_recomendaciones' (float): Porcentaje de recomendaciones positivas (True) entre las reviews realizadas.
-#     '''
-#     # Filtra el dataframe entre las fechas de interés
-#     user_data_entre_fechas = df_reviews[(df_reviews['reviews_date'] >= fecha_inicio) & (df_reviews['reviews_date'] <= fecha_fin)]
-#     # Calcula la cantidad de usuarios que dieron reviews entre las fechas de interés
-#     total_usuarios = user_data_entre_fechas['user_id'].nunique()
-#     # Calcula el total de recomendaciones entre las fechas de interes (True + False)
-#     total_recomendacion = len(user_data_entre_fechas)
-#     # Calcula la cantidad de recomendaciones positivas que que hicieron entre las fechas de interés
-#     total_recomendaciones_True = user_data_entre_fechas['recommend'].sum()
-#     # Calcula el porcentaje de recomendación realizadas entre el total de usuarios
-#     porcentaje_recomendaciones = (total_recomendaciones_True / total_recomendacion) * 100
+     Returns:
+         dict: Un diccionario que contiene estadísticas de las reviews entre las fechas especificadas.
+             - 'total_usuarios_reviews' (int): Cantidad de usuarios que realizaron reviews entre las fechas.
+             - 'porcentaje_recomendaciones' (float): Porcentaje de recomendaciones positivas (True) entre las reviews realizadas.
+     '''
+     
+     user_data_entre_fechas = df_reviews[(df_reviews['reviews_date'] >= fecha_inicio) & (df_reviews['reviews_date'] <= fecha_fin)]
+     
+     total_usuarios = user_data_entre_fechas['user_id'].nunique()
+     
+     total_recomendacion = len(user_data_entre_fechas)
+     
+     total_recomendaciones_True = user_data_entre_fechas['recommend'].sum()
+     
+     porcentaje_recomendaciones = (total_recomendaciones_True / total_recomendacion) * 100
     
-#     return {
-#         'total_usuarios_reviews': int(total_usuarios),
-#         'porcentaje_recomendaciones': round(float(porcentaje_recomendaciones),2)
-#     }
+     return {
+         'total_usuarios_reviews': int(total_usuarios),
+         'porcentaje_recomendaciones': round(float(porcentaje_recomendaciones),2)
+     }
 
 
 # @app.get(path = '/genre',
