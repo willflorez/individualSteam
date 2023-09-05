@@ -31,14 +31,11 @@ def home():
 
 @app.get(path = '/userdata')
 def userdata(user_id: str = Query(..., 
-                                description="Id", 
-                                example="EchoXSilence")):
+                                description="Coloque acá su id de usuario", 
+                                example="js41637")):
     '''
-    Esta función devuelve información sobre un usuario según su 'user_id'.
+    Esta función devuelve cantidad de dinero gastado, porcentaje de recomendación y el total de items segun el id usuario ingresado.
          
-    Args:
-        user_id (str): Identificador único del usuario.
-    
     Returns:
         dict: Un diccionario que contiene información sobre el usuario.
             - 'cantidad_dinero' (int): Cantidad de dinero gastado por el usuario.
