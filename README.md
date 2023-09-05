@@ -96,60 +96,51 @@ El modelo debe derivar en un endpoint de la API.
 
 ## Proceso de ETL
 
-Durante la fase de transformación y limpieza de datos (ETL), se han aplicado una serie de pasos para garantizar la calidad de los datos. Estas acciones buscan preparar el conjunto de datos de manera óptima para su análisis y para ser consumidos por la API qdesarrollada.
+Para ETL consideré cada Datase por aparte. Aplicando transformaciones donde el tipo de cada columna fuera el mismo. Tratando los nulos con cuidado y siendo cuidadoso con el borrado. Estudié cada columna y sus relaciones para entender que tipo de información me iba a encontrar y fui de a poco diseñando en mi mente una posible solución.  
 
-***Se tomo la desición de Tratar cada uno de los datasets en un solo archivo donde se llevaron a cabo ETL y EDA.***
 
-**1. Eliminación de Duplicados:** Para asegurar la unicidad de las filas en el conjunto de datos, se han eliminado los duplicados. 
+**1. Eliminación de Duplicados:** Cuando se evidenció la existencia de registros duplicados, se eliminaron, tenían el mismo valor en todas ls columnas.  
 
-**2. Filtrado de Fechas Inválidas:** Se ha realizado un filtrado riguroso en la columna 'release_date' para identificar y cuantificar los valores atípicos que no cumplen con el formato aaaa-mm-dd. Esto proporciona una comprensión clara de la calidad de los datos y posibles problemas en las fechas de lanzamiento. Se encontraron varios valores atípicos que no contenian año a los cuales se les asigno el valor de 2016 ya que era el último año presente.
+**2. Filtrado de Fechas Inválidas:** La colunma release_date fue transformada para poder extraer los datos en formato YYYY-MM-DD.
 
-**3. Creación de Columna de Año:** Como parte de la transformación, se ha creado una nueva columna llamada "release_year". La cual se ha obtenido a partir del año de la columna "release_date". Esta columna es crucial para los endpoints de la API y proporciona un filtro eficaz para las solicitudes basadas en el año.
+**3. Creación de Columna de Año:** Como parte de la transformación, se ha creado una nueva columna llamada "release_anio". La cual se ha obtenido a partir del año de la columna "release_date". Esta columna es crucial para los endpoints de la API y proporciona un filtro eficaz para las solicitudes basadas en el año.
 
-**4. Gestión de Valores Nulos:** Dado que los valores nulos en la columna "year_release" podrían afectar negativamente el funcionamiento de la API, se han eliminado de manera consciente. Esto garantiza que solo se consideren registros con años válidos al llamar a la API, previniendo resultados inesperados y errores en el procesamiento de datos.
-
+**4. Gestión de Valores Nulos:** Cada valor nulo que fuera lo suficientemente alto en porcentaje respecto a los demás datos de la columna se eliminaron. Esto gracias a que con otras columnas se podía seguir trabajando sin miedo a perder información.
 **5. Identificación de Outliers:** Para asegurar la integridad de la columna "year_release", se ha revisado cuidadosamente mediante la ordenación y filtrado de los primeros y últimos valores. Esta inspección visual permite identificar posibles outliers o valores incoherentes que podrían requerir tratamiento adicional para su corrección o eliminación.
 
 Del proceso de ETL se lograron obtener datos limpios y optimizado para el análisis y su implementación en la API. 
 
-*Todas estas etapas se llevaron a cabo de manera local en **Visual Studio Code (VSCODE)**, empleando **Jupyter Notebook** como nuestro entorno principal. Para la implementación de cada paso, contamos con la potencia de **Python** como lenguaje de programación, respaldado por las bibliotecas **numpy y pandas**, que fueron fundamentales para la manipulación y transformación eficiente de los datos.
+*Todas estas etapas se llevaron a cabo de manera local en **Visual Studio Code (VSCODE)**, empleando **Jupyter Notebook** como mi entorno principal. Para la implementación de cada paso, contamos con la potencia de **Python** como lenguaje de programación, respaldado por las bibliotecas **numpy y pandas**, que fueron fundamentales para la manipulación y transformación eficiente de los datos.
 
 ## EDA
 
-Utilizando los datos resultantes del proceso ETL, se llevó a cabo un análisis exploratorio de datos (EDA).
- Este proceso ayudo a entender cuestiones fundamentales de los datos, también ofreció una visión detallada de cómo abordar cuestiones como valores faltantes, valores atípicos y mucho más.
-
-La identificación de atributos relevantes se fue de ayuda para elaborar las funciones API y el sistema de recomendación que se desarrollaron posteriormente. La calidad del análisis realizado durante el EDA fue de ayuda para entender la información extraída de los datos despues de la etapa de ETL.
+El proceso de EDA lo centré en el conocimiento de las variables y como se relacionan entre sí. Queriendo encontrar datos que me indicarán la información mas relavante a tener en cuenta. De esta manera se obtiene por ejemplo lo siguiente: 
+1. De reviews casi el 62% de los datos reflejan sentimientos neutrales, cerca del 30% sentimientos positivos hacia el juego y menos del 9% fue negativo. 
+2. Cantidad de usuarios únicos que opinaron: 21432.
+3. Dias de pico de reviews
 
 *Estos procesos se desarrollaron localmente en **Visual Studio Code (VSCODE)** utilizando **Jupyter Notebook** como entorno de trabajo. La combinación de herramientas tecnológicas empleada esta basada en **Python** como lenguaje de programación, junto con librerias  como **numpy y pandas** para la manipulación de datos. Además, se utilizo **matplotlib y seaborn** para la creación de visualizaciones gráficas.*
 
 ## Funciones API
 
-En esta fase del proyecto, se llevaron a cabo el desarrollo de los pendpoints solicitados mediante funciones en Python utilizando un archivo de Jupyter Notebook. Tras la instalación de FastAPI y uvicorn, se creó un archivo **main.py** con la estructura necesaria para desplegar los endpoints. Se realizarón pruebas de implementación a nivel local, utilizando el servicio uvicorn.
-
-Estas funciones se alimentan con datos del archivo parquet resultante del análisis exploratorio de datos (EDA) realizado anteriormente. 
+En el archivo main.py se entrega el código de las funciones solicitadas, probadas en API, preparando el proyecto para su futuro despliegue con Render
 
 ## Modelo ML
 
-Se genero un modelo de ML de recomendación de videojuegos item-item el cual nos entrega 5 recomendaciones de videojuegos dependiendo del videojuego del que se le pregunte utilizando la similitud del coseno. 
+El modelo de ML de recomendación de videojuegos item-item entrega 5 recomendaciones de videojuegos. 
 
-La similitud del coseno nos ayuda a esto porque se vectoriza un dataframe y se calcula esta función trigonometrica sobre los vectores generados , con lo cual obtenemos diversos resultados que pueden ir de [-1, 1].
-
-Para el modelo se utilizo la libreria de **ScikitLearn** la cual nos ayuda a implementar este tipo de modelos con sus librerias que las incluyen.
-
-Los vectores generados toman en cuenta el genero del videojuego y la casa desarrolladora para entregarnos recomendaciones similares al producto de interes.
 
 # Deployment
 
 Luego de completar la implementación de **main.py** y demás archivos que componen el modelo y las funciones, el despliegue de la API se realizó de manera exitosa a través de Render, con ayuda de un **Dockerfile**:
 
-**1. Creación de Entorno Virtual:** El proceso de despliegue comenzó con la creación de un entorno virtual utilizando venv, lo cual permitió gestionar y separar las dependencias específicas de la API, evitando conflictos y asegurando que cualquier persona pueda replicar el proyecto.
+**1. Creación de Entorno Virtual:** Se utiliza venv, lo cual permitió gestionar y separar las dependencias específicas de la API.
 
-**2. Configuración de Archivos Necesarios:** Se llevaron a cabo las configuraciones necesarias para el despliegue, asegurando que todos los archivos esenciales estuvieran presentes y correctamente configurados. Esto garantizó una base sólida para el funcionamiento de la API en el entorno de Render. Algunos ejemplos de archivos necesarios son los datasets en formato parquet, el archivo de requirements.txt y el archivo gitignore. 
+**2. Configuración de Archivos Necesarios:** Se llevaron a cabo las configuraciones necesarias para el despliegue, asegurando que todos los archivos necesarios estuvieran presentes. Algunos archivos son los datasets en formato parquet, el archivo de requirements.txt y el archivo .gitignore. 
 
-**3. Inicialización de Git:** Se inició un repositorio de Git para el proyecto **(Este repositorio)** y se realizaron las instalaciones pertinentes de las bibliotecas y paquetes necesarios para el funcionamiento de la API. Esto aseguró que todo estuviera lista para el proceso de despliegue.
+**3. Inicialización de Git:** Se inició un repositorio de Git para el proyecto **(https://github.com/willflorez/individualSteam.git)** donde se evidencia el desarrollo del proyecto.
 
-**4. Despliegue en Render:** A través de Render, se llevaron a cabo los pasos necesarios para desplegar la API. Render proporciona una plataforma que nos ayuda a implementar una API Rest. Render implementa la API y genera el enlace para acceder a la [API en ejecución](https://primerproyectoindividualhenry.onrender.com). **(Se suguiere agregar "/docs" al final del enlace para acceder a la documentación automática creada por Swagger. Esto brinda una interfaz interactiva y detallada que describe todos los endpoints, métodos y parámetros disponibles en la API de manera clara.)**
+**4. Despliegue en Render:** Con Render se despliega la API. [API en ejecución](https://individualsteam.onrender.com). **(Se suguiere agregar "/docs" al final del enlace para acceder a la documentación automática creada por Swagger. Esto brinda una interfaz interactiva y detallada que describe todos los endpoints, métodos y parámetros disponibles en la API de manera clara.)**
 
 ## Video
 
