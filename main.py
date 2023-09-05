@@ -14,11 +14,7 @@ app = FastAPI()
 df_reviews = pd.read_csv('reviews.csv')
 df_gastos_items = pd.read_csv('gastos_items.csv')
 df_genre_ranking = pd.read_csv('genre_ranking.csv')
-#df_playtime_forever = pd.read_csv('playtime_forever.csv')
 df_items_developer = pd.read_csv('items_developer.csv')
-#piv_norm = pd.read_parquet('data/piv_norm.parquet')
-#item_sim_df = pd.read_parquet('data/item_sim_df.parquet')
-#user_sim_df = pd.read_parquet('data/user_sim_df.parquet')
 
 
 @app.get(path="/", 
@@ -33,17 +29,9 @@ def home():
     '''
     return presentacion()
 
-@app.get(path = '/userdata',
-          description = """ <font color="blue">
-                        INSTRUCCIONES<br>
-                        1. Haga clik en "Try it out".<br>
-                        2. Ingrese el user_id en el box abajo.<br>
-                        3. Scrollear a "Resposes" para ver la cantidad de dinero gastado por el usuario, el porcentaje de recomendación que realiza el usuario y cantidad de items que tiene el mismo.
-                        </font>
-                        """,
-         tags=["Consultas Generales"])
+@app.get(path = '/userdata')
 def userdata(user_id: str = Query(..., 
-                                description="Identificador único del usuario", 
+                                description="Id", 
                                 example="EchoXSilence")):
     '''
     Esta función devuelve información sobre un usuario según su 'user_id'.
@@ -57,18 +45,18 @@ def userdata(user_id: str = Query(...,
             - 'porcentaje_recomendacion' (float): Porcentaje de recomendaciones realizadas por el usuario.
             - 'total_items' (int): Cantidad de items que tiene el usuario.
     '''
-    # Filtra por el usuario de interés
+    
     usuario = df_reviews[df_reviews['user_id'] == user_id]
-    # Calcula la cantidad de dinero gastado para el usuario de interés
+    
     cantidad_dinero = df_gastos_items[df_gastos_items['user_id']== user_id]['price'].iloc[0]
-    # Busca el count_item para el usuario de interés    
+        
     count_items = df_gastos_items[df_gastos_items['user_id']== user_id]['items_count'].iloc[0]
     
-    # Calcula el total de recomendaciones realizadas por el usuario de interés
+    
     total_recomendaciones = usuario['recommend'].sum()
-    # Calcula el total de reviews realizada por todos los usuarios
+    
     total_reviews = len(df_reviews['user_id'].unique())
-    # Calcula el porcentaje de recomendaciones realizadas por el usuario de interés
+    
     porcentaje_recomendaciones = (total_recomendaciones / total_reviews) * 100
     
     return {
@@ -112,7 +100,7 @@ def countreviews(fecha_inicio: str = Query(...,
     # Calcula el total de recomendaciones entre las fechas de interes (True + False)
     total_recomendacion = len(user_data_entre_fechas)
     # Calcula la cantidad de recomendaciones positivas que que hicieron entre las fechas de interés
-    total_recomendaciones_True = user_data_entre_fechas['reviews_recommend'].sum()
+    total_recomendaciones_True = user_data_entre_fechas['recommend'].sum()
     # Calcula el porcentaje de recomendación realizadas entre el total de usuarios
     porcentaje_recomendaciones = (total_recomendaciones_True / total_recomendacion) * 100
     
@@ -182,9 +170,9 @@ def userforgenre(genero: str = Query(...,
     #for index, row in top_users.iterrows():
         # User info recorre cada fila del top 5 y lo guarda en el diccionario
         #user_info = {
-            'user_id': row['user_id'],
-            'user_url': row['user_url']
-        }
+            #'user_id': row['user_id'],
+            #'user_url': row['user_url']
+        #}
         #top_users_dict[index + 1] = user_info
     
     #return top_users_dict
