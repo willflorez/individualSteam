@@ -5,11 +5,7 @@ import pandas as pd
 import operator
 from API import presentacion
 
-# Se instancia la aplicación
 app = FastAPI()
-
-
-# Datos a usar
 
 df_reviews = pd.read_csv('reviews.csv')
 df_gastos_items = pd.read_csv('gastos_items.csv')
@@ -36,11 +32,6 @@ def userdata(user_id: str = Query(...,
     '''
     Esta función devuelve cantidad de dinero gastado, porcentaje de recomendación y el total de items segun el id usuario ingresado.
          
-    Returns:
-        dict: Un diccionario que contiene información sobre el usuario.
-            - 'cantidad_dinero' (int): Dinero gastado por el usuario.
-            - 'porcentaje_recomendacion' (float): Porcentaje de recomendaciones realizadas por el usuario.
-            - 'total_items' (int): Items del tiene el usuario.
     '''
     
     usuario = df_reviews[df_reviews['user_id'] == user_id]
@@ -73,14 +64,6 @@ def countreviews(fecha_inicio: str = Query(...,
      '''
      Esta función devolverá información en pantalla sobre las reviews realizadas por los usuarios entre dos fechas ingresadas.
          
-     Args:
-         fecha_inicio (str): Fecha de inicio para filtrar la información en formato YYYY-MM-DD.
-         fecha_fin (str): Fecha de fin para filtrar la información en formato YYYY-MM-DD.
-    
-     Returns:
-         dict: Un diccionario que contiene estadísticas de las reviews entre las fechas especificadas.
-             - 'total_usuarios_reviews' (int): Cantidad de usuarios que realizaron reviews entre las fechas.
-             - 'porcentaje_recomendaciones' (float): Porcentaje de recomendaciones positivas (True) entre las reviews realizadas.
      '''
      
      user_data_entre_fechas = df_reviews[(df_reviews['reviews_date'] >= fecha_inicio) & (df_reviews['reviews_date'] <= fecha_fin)]
@@ -99,32 +82,19 @@ def countreviews(fecha_inicio: str = Query(...,
      }
 
 
-# @app.get(path = '/genre',
-#           description = """ <font color="blue">
-#                         1. Haga clik en "Try it out".<br>
-#                         2. Ingrese el género del juego en el box abajo.<br>
-#                         3. Scrollear a "Resposes" para ver la posición del ranking donde se encuentra.
-#                         </font>
-#                         """,
-#          tags=["Consultas Generales"])
-# def genre(genero: str = Query(..., 
-#                             description="Género del videojuego", 
-#                             example='Simulation')):
-#     '''
-#     Esta función devuelve la posición de un género de videojuego en un ranking basado en la cantidad de horas jugadas.
-         
-#     Args:
-#         genero (str): Género del videojuego.
-    
-#     Returns:
-#         dict: Un diccionario que contiene la posición del género en el ranking.
-#             - 'rank' (int): Posición del género en el ranking basado en las horas jugadas.
-#     '''
-#     # Busca el ranking para el género de interés
-#     rank = df_genre_ranking[df_genre_ranking['genres'] == genero]['ranking'].iloc[0]
-#     return {
-#         'rank': int(rank)
-#     }
+@app.get(path = '/genre')
+def genre(genero: str = Query(..., 
+                             description="Ingrese género del videojuego", 
+                             example='Action')):
+     '''
+     Esta función entrega el ranking del género ingresado según la cantidad de horas jugadas.
+     '''
+
+
+     rank = df_genre_ranking[df_genre_ranking['genres'] == genero]['ranking'].iloc[0]
+     return {
+         'rank': int(rank)
+     }
 
 
 # @app.get(path = '/userforgenre',
