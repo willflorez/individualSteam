@@ -30,7 +30,7 @@ def presentacion():
         </head>
         <body>
             <h1>API de consultas de videojuegos de la plataforma Steam</h1>
-            <p>Bienvenidos!! Encontrarás funciones útiles para encontrar informacíon acerca de Steam</p>
+            <p>Bienvenidos!! Encontrarás funciones útiles para filtrar informacíón de tu interés acerca de Steam</p>
             <p>INSTRUCCIONES:</p>
             <p>Escriba <span style="background-color: lightgray;">/docs</span> a continuación de la URL actual de esta página para interactuar con la API</p>
         </body>
